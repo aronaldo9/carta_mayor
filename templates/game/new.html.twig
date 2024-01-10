@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Game{% endblock %}
+
+{% block body %}
+    <h1>Vamos a jugar</h1>
+
+    Estas son tus cartas
+    {% for card in game.player1hand %}
+        <a href="/game/play/{{game.id}}/{{card.id}}">{{card.label}}</a> <br>
+    {% endfor %}
+
+    <a href="{{ path('app_game_index') }}">back to list</a>
+{% endblock %}

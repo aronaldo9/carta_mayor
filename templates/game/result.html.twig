@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Game{% endblock %}
+
+{% block body %}
+    <h1>El ganador es...</h1>
+
+    {% if game.winner == app.user %}
+        Tú
+    {% else %}
+        La máquina
+    {% endif %}
+
+    <a href="/game/new">Jugar otra vez</a>
+{% endblock %}
