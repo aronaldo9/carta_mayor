@@ -12,14 +12,12 @@
     </head>
     <body>
     <h1>Mi juego de cartas</h1>
+        {% if app.user %}
+            Hola {{app.user.username}}. <a href="/stats">Estadisticas</a> <a href="/logout">Logout</a>
+        {% else %}
+            Hola visitante, <a href="/login">inicia sesión</a>
+        {% endif %}
 
-    {% if app.user %}
-        Hola {{app.user.username}}
-        <a href="/logout">Logout</a>
-    {% else %}
-        <a href="/login">Login</a>
-    {% endif %}
-    
         {% block body %}{% endblock %}
     </body>
 </html>

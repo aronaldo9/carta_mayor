@@ -36,14 +36,65 @@ class GameRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-   public function getWinsByUser($value): ?array
+//    public function findOneBySomeField($value): ?Game
+//    {
+//        return $this->createQueryBuilder('g')
+//            ->andWhere('g.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->getQuery()
+//            ->getOneOrNullResult()
+//        ;
+//    }
+
+
+   public function getWinsByUser($value): ?int
    {
-       return $this->createQueryBuilder('g')
+       $array= $this->createQueryBuilder('g')
            ->select('count(g.id) as total')
            ->andWhere('g.player1 = :val AND g.winner = 1')
            ->setParameter('val', $value)
            ->getQuery()
            ->getOneOrNullResult()
        ;
+       return $array['total'];
    }
+
+   public function getTopGamer(): ?int
+   {
+       $array= $this->createQueryBuilder('g')
+           ->select('count(g.player1) as total')
+        //    ->andWhere('g.player1 = :val AND g.winner = 1')
+        //    ->setParameter('val', $value)
+           ->getQuery()
+          // ->getMaxResults()
+           ->getOneOrNullResult()
+       ;
+
+       return $array['total'];
+   }
+
+   public function findGames($user, $st): array
+   {
+       return $this->createQueryBuilder('g')
+           ->andWhere('(g.player1 = :val OR g.player2 = :val) AND g.state = :val2')
+           ->setParameter('val', $user)
+           ->setParameter('val2', $st)
+           ->orderBy('g.id', 'ASC')
+           ->getQuery()
+           ->getResult()
+       ;
+   }
+   
+   public function findInvitationsGames($value): array
+   {
+       return $this->createQueryBuilder('g')
+           ->andWhere('g.player2 = :val AND g.state = 0')
+           ->setParameter('val', $value)
+           ->orderBy('g.id', 'ASC')
+           ->getQuery()
+           ->getResult()
+       ;
+   }
+
+
 }

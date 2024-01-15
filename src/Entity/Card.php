@@ -18,7 +18,7 @@ class Card
     #[ORM\Column]
     private ?int $value = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 7)]
     private ?string $suit = null;
 
     #[ORM\Column(length: 255)]
@@ -27,7 +27,7 @@ class Card
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $img = null;
 
-    #[ORM\ManyToMany(targetEntity: Game::class, inversedBy: 'cpuhand')]
+    #[ORM\ManyToMany(targetEntity: Game::class, inversedBy: 'cpuHand')]
     private Collection $gamed;
 
     public function __construct()

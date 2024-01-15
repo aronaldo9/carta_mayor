@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Controller\GameController;
 use App\Repository\GameRepository;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -36,13 +37,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'player1', targetEntity: Game::class)]
     private Collection $games;
 
-    #[ORM\OneToMany(mappedBy: 'winner', targetEntity: Game::class)]
-    private Collection $wins;
+    #[ORM\OneToMany(mappedBy: 'player2', targetEntity: Game::class)]
+    private Collection $gamesInvited;
+
 
     public function __construct()
     {
         $this->games = new ArrayCollection();
         $this->wins = new ArrayCollection();
+        $this->gamesInvited = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -145,5 +148,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return Collection<int, Game>
+     */
+    public function getGamesInvited(): Collection
+    {
+        return $this->gamesInvited;
+    }
+
+    public function addGamesInvited(Game $gamesInvited): static
+    {
+        if (!$this->gamesInvited->contains($gamesInvited)) {
+            $this->gamesInvited->add($gamesInvited);
+            $gamesInvited->setPlayer2($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGamesInvited(Game $gamesInvited): static
+    {
+        if ($this->gamesInvited->removeElement($gamesInvited)) {
+            // set the owning side to null (unless already changed)
+            if ($gamesInvited->getPlayer2() === $this) {
+                $gamesInvited->setPlayer2(null);
+            }
+        }
+
+        return $this;
+    }
 
 }

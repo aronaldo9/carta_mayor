@@ -9,6 +9,31 @@
 </style>
 
 <div class="example-wrapper">
-    <a href="/game/new">NUEVA PARTIDA</a>
+
+        <a href="/game/new">NUEVA PARTIDA</a>
+<br>
+        {% for game in invitations %}
+            {% if game.player1 == app.user %}
+                {% if game.player2 %}
+                Esperando respuesta de {{game.player2.username}}
+                {% else %}
+                Partida contra la maquina inacabada
+                {% endif %}
+            {% else %}
+            Fuiste invitado a una partida por {{ game.player1.username }} el dia {{ game.gameDateTime|date('d-m-Y') }}
+            <a href="/game/accept/{{game.id}}">Jugar ahora</a>
+            {% endif %}
+            <br>
+
+        {% endfor %}
+
+        <br>
+
+        {% for game in games %}
+            Tienes una partida pendientedel dia {{ game.gameDateTime|date('d-m-Y') }}
+            <a href="/game/accept/{{game.id}}">Jugar ahora</a>
+            <br>
+
+        {% endfor %}
 </div>
 {% endblock %}

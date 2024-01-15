@@ -30,12 +30,24 @@ class Game
     private Collection $player1Hand;
 
     #[ORM\ManyToMany(targetEntity: Card::class, mappedBy: 'gamed')]
-    private Collection $cpuhand;
+    private Collection $cpuHand;
+
+    #[ORM\ManyToOne(inversedBy: 'gamesInvited')]
+    private ?User $player2 = null;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $state = null;
+
+    #[ORM\ManyToOne]
+    private ?Card $player1CardPicked = null;
+
+    #[ORM\ManyToOne]
+    private ?Card $player2CardPicked = null;
 
     public function __construct()
     {
         $this->player1Hand = new ArrayCollection();
-        $this->cpuhand = new ArrayCollection();
+        $this->cpuHand = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -106,26 +118,74 @@ class Game
     /**
      * @return Collection<int, Card>
      */
-    public function getCpuhand(): Collection
+    public function getCpuHand(): Collection
     {
-        return $this->cpuhand;
+        return $this->cpuHand;
     }
 
-    public function addCpuhand(Card $cpuhand): static
+    public function addCpuHand(Card $cpuHand): static
     {
-        if (!$this->cpuhand->contains($cpuhand)) {
-            $this->cpuhand->add($cpuhand);
-            $cpuhand->addGamed($this);
+        if (!$this->cpuHand->contains($cpuHand)) {
+            $this->cpuHand->add($cpuHand);
+            $cpuHand->addGamed($this);
         }
 
         return $this;
     }
 
-    public function removeCpuhand(Card $cpuhand): static
+    public function removeCpuHand(Card $cpuHand): static
     {
-        if ($this->cpuhand->removeElement($cpuhand)) {
-            $cpuhand->removeGamed($this);
+        if ($this->cpuHand->removeElement($cpuHand)) {
+            $cpuHand->removeGamed($this);
         }
+
+        return $this;
+    }
+
+    public function getPlayer2(): ?User
+    {
+        return $this->player2;
+    }
+
+    public function setPlayer2(?User $player2): static
+    {
+        $this->player2 = $player2;
+
+        return $this;
+    }
+
+    public function getState(): ?int
+    {
+        return $this->state;
+    }
+
+    public function setState(int $state): static
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    public function getPlayer1CardPicked(): ?Card
+    {
+        return $this->player1CardPicked;
+    }
+
+    public function setPlayer1CardPicked(?Card $player1CardPicked): static
+    {
+        $this->player1CardPicked = $player1CardPicked;
+
+        return $this;
+    }
+
+    public function getPlayer2CardPicked(): ?Card
+    {
+        return $this->player2CardPicked;
+    }
+
+    public function setPlayer2CardPicked(?Card $player2CardPicked): static
+    {
+        $this->player2CardPicked = $player2CardPicked;
 
         return $this;
     }

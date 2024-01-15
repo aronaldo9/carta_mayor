@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Card;
 use App\Entity\Game;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -14,14 +15,9 @@ class GameType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('gameDateTime')
-            ->add('player1', EntityType::class, [
+            ->add('player2', EntityType::class, [
                 'class' => User::class,
-'choice_label' => 'id',
-            ])
-            ->add('winner', EntityType::class, [
-                'class' => User::class,
-'choice_label' => 'id',
+'choice_label' => 'username',
             ])
         ;
     }
